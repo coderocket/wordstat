@@ -1,0 +1,67 @@
+<project>
+
+	<property name="lib.dir"	value="lib"/>
+	<property name="src.dir"	value="src/main/java"/>
+
+	<property name="junit.jar"	value="lib/junit-4.12.jar"/>
+	<property name="hamcrest.jar"	value="lib/hamcrest-core-1.3.jar"/>
+
+	<path id="classpath">
+		<fileset dir="${lib.dir}" includes="**/*.jar"/>
+	</path>
+
+    <target name="clean">
+        <delete dir="build"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="build/classes"/>
+		<copy todir="build/classes/resources">
+			<fileset dir="src/main/resources"/>
+		</copy>
+        <javac srcdir="src/main/java" destdir="build/classes" classpathref="classpath" debug="on">
+			<compilerarg value="-Xlint"/>
+		</javac>
+    </target>
+
+    <target name="jar">
+        <mkdir dir="build/jar"/>
+        <jar destfile="build/jar/WordStat.jar" basedir="build/classes">
+            <manifest>
+                <attribute name="Main-Class" value="edu.afeka.controller.Main"/>
+            </manifest>
+						<fileset dir="${src.dir}" includes ="**/*.java"/>
+        </jar>
+    </target>
+
+    <target name="compile-test">
+        <mkdir dir="build/classes"/>
+		<copy todir="build/classes/resources">
+			<fileset dir="src/test/resources"/>
+		</copy>
+        <javac srcdir="src/test/java" destdir="build/classes" classpathref="classpath" debug="on">
+			<compilerarg value="-Xlint"/>
+		</javac>
+    </target>
+
+	<target name="junit" depends="compile-test">
+		<junit printsummary="yes" fork="yes" haltonfailure="yes">
+
+		<classpath>
+			<pathelement location="build/classes"/>
+			<pathelement path="${java.class.path}"/>
+			<pathelement path="${junit.jar}"/>
+			<pathelement path="${hamcrest.jar}"/>
+		  </classpath>
+
+		  <formatter type="plain"/>
+		  <test name="edu.afeka.trie.TestCase"/>
+		  <test name="edu.afeka.oracle.TestCase"/>
+		  <test name="edu.afeka.document.TestCase"/>
+		  <test name="edu.afeka.histogram.TestCase"/>
+		  <test name="edu.afeka.report.TestCase"/>
+		</junit>
+	</target>
+
+</project>
+

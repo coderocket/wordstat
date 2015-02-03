@@ -1,0 +1,12 @@
+
+To build wordstat run
+
+ant compile
+
+To test wordstat run
+
+ant junit
+
+You will need to download junit and copy junit's jar files into
+the lib directory before you can run junit.
+
